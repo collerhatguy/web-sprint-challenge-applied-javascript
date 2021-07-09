@@ -50,7 +50,7 @@ const cardAppender = (selector) => {
       const articles = await data.articles;
       const articleKeys = await Object.keys(articles);
       const articlesArray = await articleKeys.map(key => articles[key])
-      console.log(articlesArray);
+      
       articlesArray.forEach(arr => {
         const cards = arr.map(article => Card(article));
         cards.forEach(card => {
