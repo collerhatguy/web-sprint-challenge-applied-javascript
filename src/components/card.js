@@ -1,4 +1,25 @@
-const Card = (article) => {
+const Card = ({ headline, authorPhoto, authorName}) => {
+  const card = document.createElement("div");
+  const headlineCtnr = document.createElement("div");
+  const author = document.createElement("div");
+  const imgContainer = document.createElement("div");
+  const img = document.createElement("img");
+  const qoute = document.createElement("span");
+
+  card.classList.add("card");
+  headlineCtnr.classList.add("headline");
+  author.classList.add("author");
+  imgContainer.classList.add("img-container");
+
+  headlineCtnr.textContent = headline;
+  img.src = authorPhoto;
+  qoute.textContent = `By ${authorName}`;
+  
+  imgContainer.append(img);
+  author.append(imgContainer, qoute);
+  card.append(headlineCtnr, author);
+
+  return card;
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -16,10 +37,33 @@ const Card = (article) => {
   //     <span>By { authorName }</span>
   //   </div>
   // </div>
-  //
 }
+import axios from "axios";
 
 const cardAppender = (selector) => {
+  const container = document.querySelector(selector);
+
+  const apiUse = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/api/articles`);
+      const data = await res.data;
+      const articles = await data.articles;
+      const articleKeys = await Object.keys(articles);
+      const articlesArray = await articleKeys.map(key => articles[key])
+      console.log(articlesArray);
+      articlesArray.forEach(arr => {
+        const cards = arr.map(article => Card(article));
+        cards.forEach(card => {
+          container.append(card)
+        })
+
+      })
+    } catch(err) {
+      throw err;
+    }
+  }
+  apiUse();
+
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
